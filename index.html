@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AniStream · Watch Free Anime Online · Stream Subbed & Dubbed in HD</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <a class="nav-logo" href="index.html">ANISTREAM<em>.</em></a>
+  <div class="nav-search-wrap">
+    <span class="nav-s-icon">⌕</span>
+    <input type="text" id="navSearch" placeholder="Search Anime" autocomplete="off" />
+    <span class="nav-s-kbd">⌘</span>
+    <button class="nav-s-btn" id="navSearchBtn">↵</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="search.html">Browse</a>
+    </div>
+    <a class="nav-icon-btn" href="search.html" title="Browse All">⊞</a>
+  </div>
+</nav>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero" id="hero">
+    <div id="heroSlides"></div>
+    <div class="hero-counter" id="heroCounter" style="display:none">
+      <button class="hero-c-btn" id="heroPrev">‹</button>
+      <span class="hero-c-text" id="heroCounterText">1 / 1</span>
+      <button class="hero-c-btn" id="heroNext">›</button>
+    </div>
+  </div>
+
+  <!-- GENRE TABS -->
+  <div class="genre-row-wrap">
+    <button class="genre-row-scroll l" id="genreL">‹</button>
+    <div class="genre-row" id="genreRow"></div>
+    <button class="genre-row-scroll r" id="genreR">›</button>
+  </div>
+
+  <!-- MAIN CONTENT LAYOUT -->
+  <div class="content-wrap">
+
+    <!-- LEFT: MAIN CONTENT -->
+    <div class="content-main">
+
+      <!-- TABS + PAGER -->
+      <div class="main-tabs-row">
+        <div class="tab-pills">
+          <button class="tab-pill active" data-tab="newest">NEWEST</button>
+          <button class="tab-pill" data-tab="popular">POPULAR</button>
+          <button class="tab-pill" data-tab="toprated">TOP RATED</button>
+        </div>
+        <div class="pager">
+          <button class="pager-btn" id="pagePrev" disabled>‹</button>
+          <span class="pager-num" id="pageNum">1</span>
+          <button class="pager-btn" id="pageNext">›</button>
+        </div>
+      </div>
+
+      <!-- MAIN GRID -->
+      <div class="m-grid" id="mainGrid" aria-label="Anime list">
+        <!-- skeletons injected by JS -->
+      </div>
+
+      <!-- BOTTOM: JUST FINISHED + TOP MOVIES -->
+      <div class="bottom-row" id="bottomRow">
+        <div class="b-section">
+          <div class="s-header">
+            <span class="s-title">› JUST FINISHED</span>
+          </div>
+          <div id="finishedList"></div>
+        </div>
+        <div class="b-section">
+          <div class="s-header">
+            <span class="s-title">› TOP MOVIES</span>
+          </div>
+          <div id="moviesList"></div>
+        </div>
+      </div>
+
+    </div><!-- /content-main -->
+
+    <!-- RIGHT: SIDEBAR -->
+    <aside class="content-sidebar">
+
+      <div class="sb-section">
+        <div class="s-header">
+          <span class="s-title">TOP AIRING</span>
+          <a class="s-more" href="search.html?status=RELEASING">›</a>
+        </div>
+        <div id="topAiringList">
+          <div class="loading-wrap"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <div class="sb-section">
+        <div class="s-header">
+          <span class="s-title">UPCOMING</span>
+          <a class="s-more" href="search.html">›</a>
+        </div>
+        <div id="upcomingList">
+          <div class="loading-wrap"><div class="spinner"></div></div>
+        </div>
+      </div>
+
+      <div class="sb-section">
+        <div class="s-header">
+          <span class="s-title">Airing Schedule</span>
+        </div>
+        <div class="sched-days" id="schedDays"></div>
+        <div id="schedList">
+          <div class="loading-wrap"><div class="spinner"></div></div>
+        </div>
+        <div class="sched-more" onclick="location.href='search.html?status=RELEASING'">View More</div>
+      </div>
+
+    </aside><!-- /sidebar -->
+
+  </div><!-- /content-wrap -->
+
+</main><!-- /main -->
+
+<footer class="footer">
+  <div>
+    <div class="footer-logo">ANISTREAM<em>.</em></div>
+    <p class="footer-disc">This website does not retain any files on its server. Rather, it solely provides links to media content hosted by third-party services.</p>
+  </div>
+  <div class="footer-links">
+    <a class="footer-link" href="search.html?sort=TRENDING_DESC">Trending</a>
+    <a class="footer-link" href="search.html">Search</a>
+    <a class="footer-link" href="search.html?status=RELEASING">Schedule</a>
+  </div>
+</footer>
+<div class="footer-copy">© 2026 AniStream · Data from AniList · Streaming via MegaPlay</div>
+
+<script src="js/api.js"></script>
+<script src="js/home.js"></script>
+<script>
+  const ns = document.getElementById('navSearch');
+  const go = () => { if (ns.value.trim()) location.href = `search.html?q=${encodeURIComponent(ns.value.trim())}`; };
+  ns.addEventListener('keydown', e => e.key === 'Enter' && go());
+  document.getElementById('navSearchBtn').addEventListener('click', go);
+</script>
+</body>
+</html>

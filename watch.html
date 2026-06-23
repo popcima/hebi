@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Watch — AniStream</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>" />
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-logo" href="index.html">ANISTREAM<em>.</em></a>
+  <div class="nav-search-wrap">
+    <span class="nav-s-icon">⌕</span>
+    <input type="text" id="navSearch" placeholder="Search Anime" autocomplete="off" />
+  </div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="search.html">Browse</a>
+    </div>
+  </div>
+</nav>
+
+<main class="main" id="mainContent">
+  <div class="loading-wrap" style="min-height:80vh">
+    <div class="spinner"></div>
+    <p class="loading-text">Loading player...</p>
+  </div>
+</main>
+
+<footer class="footer">
+  <p>Built with ❤️ using <span>AniStream</span> · Data from AniList · Streaming via MegaPlay</p>
+</footer>
+
+<script src="js/api.js"></script>
+<script src="js/watch.js"></script>
+<script>
+  document.getElementById('navSearch').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target.value.trim()) {
+      window.location.href = `search.html?q=${encodeURIComponent(e.target.value.trim())}`;
+    }
+  });
+</script>
+</body>
+</html>
