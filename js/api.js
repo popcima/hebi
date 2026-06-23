@@ -114,8 +114,9 @@ async function getUpcoming(page, perPage) {
   return data.Page.media;
 }
 
-/* search — type:ANIME always enforced via $type variable */
+/* search — type:ANIME always enforced; sort falls back to POPULARITY_DESC when no search term */
 async function searchAnime(search, genres, page, perPage) {
+  const hasSearch = search && search.trim();
   const query = `
     query ($search: String, $genres: [String], $page: Int, $perPage: Int) {
       Page(page: $page, perPage: $perPage) {
@@ -125,7 +126,7 @@ async function searchAnime(search, genres, page, perPage) {
           isAdult: false
           search: $search
           genre_in: $genres
-          sort: SEARCH_MATCH
+          sort: ${hasSearch ? 'SEARCH_MATCH' : 'POPULARITY_DESC'}
         ) {
           ${MEDIA_FRAGMENT}
         }
@@ -133,7 +134,7 @@ async function searchAnime(search, genres, page, perPage) {
     }
   `;
   const variables = { page: page || 1, perPage: perPage || 24 };
-  if (search && search.trim()) variables.search = search.trim();
+  if (hasSearch) variables.search = search.trim();
   if (genres && genres.length > 0) variables.genres = genres;
   const data = await anilistFetch(query, variables);
   return data.Page;

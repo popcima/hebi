@@ -142,7 +142,7 @@ async function loadGrid(tab, page) {
   grid.innerHTML = skeletons(20);
   currentPage = page || 1;
   var fetchFn = { newest: getNewest, popular: getPopular, toprated: getTopRated }[tab || 'newest'];
-  var items = await fetchFn(currentPage, 20);
+  var items = (await fetchFn(currentPage, 20)).filter(function(m) { return m.type === 'ANIME'; });
   grid.innerHTML = items.map(mCard).join('');
   document.getElementById('pageNum').textContent = currentPage;
   document.getElementById('pagePrev').disabled = currentPage <= 1;
@@ -188,8 +188,8 @@ function bItem(media) {
 
 async function loadBottomLists() {
   var results = await Promise.all([getFinished(1, 8), getMovies(1, 8)]);
-  document.getElementById('finishedList').innerHTML = results[0].map(bItem).join('');
-  document.getElementById('moviesList').innerHTML = results[1].map(bItem).join('');
+  document.getElementById('finishedList').innerHTML = results[0].filter(function(m) { return m.type === 'ANIME'; }).map(bItem).join('');
+  document.getElementById('moviesList').innerHTML = results[1].filter(function(m) { return m.type === 'ANIME'; }).map(bItem).join('');
 }
 
 /* ─── SIDEBAR ───────────────────────────────────────── */
@@ -214,9 +214,9 @@ async function loadSidebar() {
   var results = await Promise.all([getAiring(1, 8), getUpcoming(1, 8)]);
   var airingEl = document.getElementById('topAiringList');
   var upcomingEl = document.getElementById('upcomingList');
-  airingEl.innerHTML = results[0].map(function(m) { return sbItem(m, 'g'); }).join('') ||
+  airingEl.innerHTML = results[0].filter(function(m) { return m.type === 'ANIME'; }).map(function(m) { return sbItem(m, 'g'); }).join('') ||
     '<p style="color:var(--text-muted);font-size:.78rem;padding:8px 0">No data</p>';
-  upcomingEl.innerHTML = results[1].map(function(m) { return sbItem(m, 'o'); }).join('') ||
+  upcomingEl.innerHTML = results[1].filter(function(m) { return m.type === 'ANIME'; }).map(function(m) { return sbItem(m, 'o'); }).join('') ||
     '<p style="color:var(--text-muted);font-size:.78rem;padding:8px 0">No data</p>';
 }
 

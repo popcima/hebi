@@ -27,16 +27,18 @@ function buildEpisodeGrid(totalEp, id, lang) {
 
 function renderRecs(recs) {
   if (!recs || !recs.nodes || !recs.nodes.length) return '';
-  var items = recs.nodes.filter(function(n) { return n.mediaRecommendation; }).map(function(n) {
-    var m = n.mediaRecommendation;
-    var t = m.title ? (m.title.english || m.title.romaji || '') : '';
-    var img = m.coverImage ? (m.coverImage.large || m.coverImage.medium || '') : '';
-    return '<div class="anime-card" onclick="location.href=\'anime.html?id=' + m.id + '\'">' +
-      '<div class="card-img-wrap"><img src="' + escH(img) + '" alt="' + escH(t) + '" loading="lazy" />' +
-      '<div class="card-score">★ ' + formatScore(m.averageScore) + '</div></div>' +
-      '<div class="card-info"><div class="card-title">' + escH(t) + '</div></div>' +
-    '</div>';
-  }).join('');
+  var items = recs.nodes
+    .filter(function(n) { return n.mediaRecommendation && n.mediaRecommendation.type === 'ANIME'; })
+    .map(function(n) {
+      var m = n.mediaRecommendation;
+      var t = m.title ? (m.title.english || m.title.romaji || '') : '';
+      var img = m.coverImage ? (m.coverImage.large || m.coverImage.medium || '') : '';
+      return '<div class="anime-card" onclick="location.href=\'anime.html?id=' + m.id + '\'">' +
+        '<div class="card-img-wrap"><img src="' + escH(img) + '" alt="' + escH(t) + '" loading="lazy" />' +
+        '<div class="card-score">★ ' + formatScore(m.averageScore) + '</div></div>' +
+        '<div class="card-info"><div class="card-title">' + escH(t) + '</div></div>' +
+      '</div>';
+    }).join('');
   return '<section class="section" style="max-width:1100px;margin:0 auto">' +
     '<div class="section-header"><h2 class="section-title">💡 Recommendations</h2></div>' +
     '<div class="anime-grid">' + items + '</div>' +

@@ -84,7 +84,7 @@ async function doSearch(reset) {
       page = await searchAnime(currentQuery || null, currentGenre ? [currentGenre] : [], currentPage, 24);
     }
 
-    var items = page.media || [];
+    var items = (page.media || []).filter(function(m) { return m.type === 'ANIME'; });
     var hasNext = page.pageInfo && page.pageInfo.hasNextPage;
 
     if (reset) {
