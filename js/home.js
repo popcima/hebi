@@ -124,7 +124,7 @@ function loadTrendingRow(items) {
 }
 
 /* ─── MAIN GRID ─────────────────────────────────────── */
-var currentTab = 'newest', currentPage = 1;
+var currentTab = 'trending', currentPage = 1;
 
 function skeletons(n) {
   var html = '';
@@ -163,7 +163,7 @@ async function loadGrid(tab, page) {
   var grid = document.getElementById('mainGrid');
   grid.innerHTML = skeletons(20);
   currentPage = page || 1;
-  var fetchFn = { newest: getNewest, popular: getPopular, toprated: getTopRated }[tab || 'newest'];
+  var fetchFn = { trending: getTrending, popular: getPopular, toprated: getTopRated }[tab || 'trending'];
   var items = (await fetchFn(currentPage, 20)).filter(function(m) { return m.type === 'ANIME'; });
   grid.innerHTML = items.map(mCard).join('');
   document.getElementById('pageNum').textContent = currentPage;
@@ -310,7 +310,7 @@ async function homeInit() {
   initScheduleDays();
 
   var trendingPromise = getTrending(1, 20);
-  loadGrid('newest', 1);
+  loadGrid('trending', 1);
   loadSidebar();
   loadBottomLists();
   loadSchedule(0);
