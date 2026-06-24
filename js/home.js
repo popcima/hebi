@@ -101,28 +101,6 @@ function initGenreRow() {
   document.getElementById('genreR').onclick = function() { row.scrollBy({ left: 200, behavior: 'smooth' }); };
 }
 
-/* ─── TRENDING ROW ──────────────────────────────────── */
-function tCard(media, rank) {
-  var title = getTitle(media);
-  var img = media.coverImage.large || media.coverImage.medium;
-  var score = formatScore(media.averageScore);
-  return '<div class="t-card" onclick="location.href=\'anime.html?id=' + media.id + '\'">' +
-    '<div class="t-card-poster">' +
-      '<img src="' + escH(img) + '" alt="' + escH(title) + '" loading="lazy" />' +
-      '<div class="t-rank">#' + rank + '</div>' +
-      (score !== 'N/A' ? '<div class="t-score">★ ' + score + '</div>' : '') +
-    '</div>' +
-    '<div class="t-card-title">' + escH(title) + '</div>' +
-  '</div>';
-}
-
-function loadTrendingRow(items) {
-  var row = document.getElementById('trendingRow');
-  if (!row) return;
-  var anime = items.filter(function(m) { return m.type === 'ANIME'; });
-  row.innerHTML = anime.map(function(m, i) { return tCard(m, i + 1); }).join('');
-}
-
 /* ─── MAIN GRID ─────────────────────────────────────── */
 var currentTab = 'trending', currentPage = 1;
 
@@ -309,7 +287,7 @@ async function homeInit() {
   initTabs();
   initScheduleDays();
 
-  var trendingPromise = getTrending(1, 20);
+  var trendingPromise = getTrending(1, 11);
   loadGrid('trending', 1);
   loadSidebar();
   loadBottomLists();
