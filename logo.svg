@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 295 68" width="295" height="68">
+  <defs>
+    <linearGradient id="bodyGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#880000"/>
+      <stop offset="100%" stop-color="#FF3333"/>
+    </linearGradient>
+    <radialGradient id="headGrad" cx="60%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#FF5555"/>
+      <stop offset="100%" stop-color="#CC0000"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Icon background -->
+  <circle cx="34" cy="34" r="32" fill="#090910"/>
+  <circle cx="34" cy="34" r="32" fill="none" stroke="#BB0000" stroke-width="1.5"/>
+  <circle cx="34" cy="34" r="27" fill="none" stroke="#2a0000" stroke-width="1"/>
+
+  <!-- Snake body -->
+  <path d="M 34,62 C 14,57 12,42 26,35 C 40,28 54,18 44,8"
+        fill="none"
+        stroke="url(#bodyGrad)"
+        stroke-width="5.5"
+        stroke-linecap="round"
+        filter="url(#glow)"/>
+
+  <!-- Snake head -->
+  <ellipse cx="42" cy="8" rx="7" ry="4.5"
+           fill="url(#headGrad)"
+           transform="rotate(-48 42 8)"
+           filter="url(#glow)"/>
+
+  <!-- Eye -->
+  <circle cx="45.5" cy="6" r="1.8" fill="#090910"/>
+  <circle cx="46" cy="5.5" r="0.55" fill="#ff9999" opacity="0.9"/>
+
+  <!-- Tongue -->
+  <line x1="39" y1="4.5" x2="35" y2="1.5" stroke="#FF2222" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="39" y1="4.5" x2="36.5" y2="0.5" stroke="#FF2222" stroke-width="0.9" stroke-linecap="round"/>
+
+  <!-- Text: HEBI white -->
+  <text x="80" y="47"
+        font-family="'Arial Black', Arial, sans-serif"
+        font-size="30"
+        font-weight="900"
+        fill="#FFFFFF"
+        letter-spacing="1">HEBI</text>
+
+  <!-- Text: ANIME red -->
+  <text x="168" y="47"
+        font-family="'Arial Black', Arial, sans-serif"
+        font-size="30"
+        font-weight="900"
+        fill="#CC1111"
+        letter-spacing="1">ANIME</text>
+</svg>
