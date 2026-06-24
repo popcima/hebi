@@ -70,11 +70,12 @@ function buildEpCard(n, total, active, poster) {
   var thumb   = epData.thumb || poster;
   var hasReal = !!epData.thumb;
   var epTitle = epData.title ? 'Ep '+n+': '+escH(epData.title) : 'Episode '+n;
+  var fb      = escH(poster); // fallback if thumb 404s
 
   return (
     '<div class="wep-card'+(active?' active':'')+'" id="sep-'+n+'" data-ep="'+n+'">' +
       '<div class="wep-thumb'+(hasReal?' has-real':'')+'">' +
-        '<img src="'+escH(thumb)+'" alt="Ep '+n+'" loading="lazy"/>' +
+        '<img src="'+escH(thumb)+'" alt="Ep '+n+'" loading="lazy" onerror="if(this.src!==\''+fb+'\')this.src=\''+fb+'\'"/>' +
         '<span class="wep-badge">EP '+n+'</span>' +
       '</div>' +
       '<div class="wep-body">' +
@@ -245,7 +246,12 @@ function renderWatch(media) {
     '<div class="wp-sidebar">'+
       '<div class="wp-sb-hd">'+
         '<span class="wp-sb-label"><i class="fa-solid fa-list"></i> Episodes</span>'+
-        (total?'<span class="wp-sb-count">'+total+'</span>':'')+
+        '<div style="display:flex;align-items:center;gap:8px">'+
+          (total?'<span class="wp-sb-count">'+total+'</span>':'')+
+          '<button class="wp-view-btn" id="viewToggle" title="Switch view">'+
+            '<i class="fa-solid fa-grip" id="viewIcon"></i>'+
+          '</button>'+
+        '</div>'+
       '</div>'+
       (useRange?'<div class="wp-ranges" id="rangeBar">'+buildRangeBtns(total,chunk)+'</div>':'')+
       '<div class="wp-filter-wrap">'+
@@ -294,7 +300,11 @@ function attachEvents(total, poster, chunk) {
     var s2 = parseInt(btn.dataset.start);
     var e2 = parseInt(btn.dataset.end);
     var epList = document.getElementById('epList');
-    if (epList) epList.innerHTML = buildEpListHtml(total, poster, s2, e2);
+    if (epList) {
+      var wasGrid = epList.classList.contains('grid-mode');
+      epList.innerHTML = buildEpListHtml(total, poster, s2, e2);
+      if (wasGrid) epList.classList.add('grid-mode');
+    }
     reattachEpList(total, poster);
     scrollToEp();
   });
@@ -308,6 +318,24 @@ function attachEvents(total, poster, chunk) {
       card.style.display = (val===''||('episode '+n2).includes(val)||n2.includes(val)) ? '' : 'none';
     });
   });
+
+  /* grid / list toggle */
+  var vt   = document.getElementById('viewToggle');
+  var icon = document.getElementById('viewIcon');
+  var epl  = document.getElementById('epList');
+  if (vt && epl) {
+    var isGrid = localStorage.getItem('anistream:epView') === 'grid';
+    function applyView(g) {
+      epl.classList.toggle('grid-mode', g);
+      if (icon) { icon.className = g ? 'fa-solid fa-list' : 'fa-solid fa-grip'; }
+    }
+    applyView(isGrid);
+    vt.addEventListener('click', function() {
+      isGrid = !isGrid;
+      applyView(isGrid);
+      localStorage.setItem('anistream:epView', isGrid ? 'grid' : 'list');
+    });
+  }
 }
 
 function reattachEpList(total, poster) {

@@ -803,6 +803,38 @@ input,textarea{font:inherit}
 }
 .wep-meta{font-size:.65rem;color:var(--text-muted);display:flex;align-items:center;gap:5px}
 
+/* grid/list toggle button */
+.wp-view-btn{
+  width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+  background:var(--bg3);border:1px solid var(--border);color:var(--text-muted);
+  font-size:.72rem;cursor:pointer;transition:all .15s;flex-shrink:0;
+}
+.wp-view-btn:hover{border-color:var(--border-h);color:var(--text)}
+
+/* grid mode episode list */
+.wp-eplist.grid-mode{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px;
+}
+.wp-eplist.grid-mode .wep-card{
+  flex-direction:column;padding:0;border-bottom:none;
+  border-radius:8px;overflow:hidden;border:1px solid var(--border);
+  background:var(--bg3);
+}
+.wp-eplist.grid-mode .wep-card:hover{background:var(--bg3);border-color:var(--border-h)}
+.wp-eplist.grid-mode .wep-card.active{border-color:rgba(181,168,255,.4)}
+.wp-eplist.grid-mode .wep-thumb{
+  width:100%;aspect-ratio:16/9;border-radius:0;
+}
+.wp-eplist.grid-mode .wep-thumb img{transition:transform .3s}
+.wp-eplist.grid-mode .wep-card:hover .wep-thumb img{transform:scale(1.06)}
+.wp-eplist.grid-mode .wep-body{
+  padding:7px 8px 8px;gap:3px;
+}
+.wp-eplist.grid-mode .wep-title{
+  font-size:.7rem;-webkit-line-clamp:2;
+}
+.wp-eplist.grid-mode .wep-meta{font-size:.6rem}
+
 /* external streaming links */
 .wp-extlinks{
   display:flex;gap:8px;flex-wrap:wrap;
