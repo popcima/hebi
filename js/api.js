@@ -41,6 +41,8 @@ const MEDIA_FRAGMENT = `
   popularity
   season
   seasonYear
+  idMal
+  countryOfOrigin
   startDate { year month day }
   endDate { year month day }
   studios(isMain: true) { nodes { name } }
@@ -174,6 +176,7 @@ async function getAnimeById(id) {
         airingSchedule(notYetAired: false) {
           nodes { episode airingAt }
         }
+        trailer { id site }
         streamingEpisodes { title thumbnail site url }
         externalLinks { site url type }
         characters(sort: ROLE, perPage: 8) {
@@ -187,7 +190,7 @@ async function getAnimeById(id) {
         }
         recommendations(perPage: 8) {
           nodes {
-            mediaRecommendation { id title { romaji english } coverImage { large } averageScore type }
+            mediaRecommendation { id title { romaji english } coverImage { large } bannerImage averageScore type format episodes }
           }
         }
       }
