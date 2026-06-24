@@ -1,14 +1,14 @@
 /* Home page logic — no ES modules */
 var GRADIENTS = [
   'linear-gradient(45deg,#e4c928,white)',
+  'linear-gradient(45deg,#B5A8FF,white)',
+  'linear-gradient(45deg,#d4cafe,white)',
+  'linear-gradient(45deg,#e4c928,#B5A8FF)',
+  'linear-gradient(45deg,#f0e8ff,white)',
   'linear-gradient(45deg,#e4d6ae,white)',
-  'linear-gradient(45deg,#aec9e4,white)',
-  'linear-gradient(45deg,#e49350,white)',
-  'linear-gradient(45deg,#43aef1,white)',
-  'linear-gradient(45deg,#e4a150,white)',
-  'linear-gradient(45deg,#e49335,white)',
-  'linear-gradient(45deg,#1abbd6,white)',
-  'linear-gradient(45deg,#1ae4f1,white)',
+  'linear-gradient(45deg,#c9bfff,white)',
+  'linear-gradient(45deg,#ffd97d,white)',
+  'linear-gradient(45deg,#e4c928,#c9bfff)',
 ];
 
 var heroItems = [], heroIdx = 0, heroTimer = null;
@@ -43,9 +43,9 @@ function buildHeroSlide(media, idx) {
     '<div class="hero-content">' +
       '<div class="hero-info-row">' +
         '<span>' + format + '</span>' +
-        (ep ? '<span>📺 ' + ep + '</span>' : '') +
-        (score !== 'N/A' ? '<span>★ ' + score + '</span>' : '') +
-        (media.duration ? '<span>⏱ ' + media.duration + 'm</span>' : '') +
+        (ep ? '<span><i class="fa-solid fa-tv"></i> ' + ep + '</span>' : '') +
+        (score !== 'N/A' ? '<span><i class="fa-solid fa-star"></i> ' + score + '</span>' : '') +
+        (media.duration ? '<span><i class="fa-solid fa-clock"></i> ' + media.duration + 'm</span>' : '') +
       '</div>' +
       '<div class="hero-title" style="background:' + grad + ';-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">' + escH(title) + '</div>' +
       '<div class="hero-tags">' +
@@ -54,8 +54,8 @@ function buildHeroSlide(media, idx) {
       '</div>' +
       (desc ? '<p class="hero-desc">' + escH(desc) + (desc.length >= 200 ? '…' : '') + '</p>' : '') +
       '<div class="hero-btns">' +
-        '<a class="hero-btn hero-btn-watch" href="watch.html?id=' + media.id + '&ep=1&lang=sub">▶ WATCH NOW</a>' +
-        '<a class="hero-btn" href="anime.html?id=' + media.id + '">ⓘ DETAILS</a>' +
+        '<a class="hero-btn hero-btn-watch" href="watch.html?id=' + media.id + '&ep=1&lang=sub"><i class="fa-solid fa-play"></i> WATCH NOW</a>' +
+        '<a class="hero-btn" href="anime.html?id=' + media.id + '"><i class="fa-solid fa-circle-info"></i> DETAILS</a>' +
       '</div>' +
     '</div>';
   return div;
@@ -117,12 +117,13 @@ function mCard(media) {
   var score = formatScore(media.averageScore);
   var img = media.coverImage.large || media.coverImage.medium;
   var dot = dotCls(media.status);
-  var ep = media.episodes ? '📺 ' + media.episodes : '';
+  var ep = media.episodes ? '<i class="fa-solid fa-tv"></i> ' + media.episodes : '';
   var year = media.seasonYear || '';
   var format = (media.format || '').replace(/_/g, ' ');
   return '<div class="m-card fade-in" onclick="location.href=\'anime.html?id=' + media.id + '\'">' +
     '<div class="m-card-poster">' +
       '<img src="' + escH(img) + '" alt="' + escH(title) + '" loading="lazy" />' +
+      (score !== 'N/A' ? '<div class="m-score-badge"><i class="fa-solid fa-star"></i> ' + score + '</div>' : '') +
       '<div class="m-dot ' + dot + '"></div>' +
     '</div>' +
     '<div class="m-card-body">' +
@@ -131,7 +132,6 @@ function mCard(media) {
         (format ? '<span>' + format + '</span>' : '') +
         (year ? '<span>' + year + '</span>' : '') +
         (ep ? '<span>' + ep + '</span>' : '') +
-        (score !== 'N/A' ? '<span>★ ' + score + '</span>' : '') +
       '</div>' +
     '</div>' +
   '</div>';
@@ -181,7 +181,7 @@ function bItem(media) {
     '<div class="b-body">' +
       '<div class="b-status"><div class="b-dot ' + dot + '"></div>' + statusLabel + '</div>' +
       '<div class="b-title">' + escH(title) + '</div>' +
-      '<div class="b-meta">' + format + (year ? ' · ' + year : '') + (ep ? ' · 📺 ' + ep : '') + (score !== 'N/A' ? ' · ★ ' + score : '') + '</div>' +
+      '<div class="b-meta">' + format + (year ? ' · ' + year : '') + (ep ? ' · <i class="fa-solid fa-tv"></i> ' + ep : '') + (score !== 'N/A' ? ' · <i class="fa-solid fa-star"></i> ' + score : '') + '</div>' +
     '</div>' +
   '</div>';
 }
@@ -205,7 +205,7 @@ function sbItem(media, dotClass) {
     '<div class="sb-body">' +
       '<div class="sb-status"><div class="sb-dot ' + (dotClass || 'g') + '"></div>' + (year || '') + '</div>' +
       '<div class="sb-title">' + escH(title) + '</div>' +
-      '<div class="sb-meta">' + format + (ep ? ' · 📺 ' + ep : '') + (score !== 'N/A' ? ' · ★ ' + score : '') + '</div>' +
+      '<div class="sb-meta">' + format + (ep ? ' · <i class="fa-solid fa-tv"></i> ' + ep : '') + (score !== 'N/A' ? ' · <i class="fa-solid fa-star"></i> ' + score : '') + '</div>' +
     '</div>' +
   '</div>';
 }
@@ -295,7 +295,6 @@ async function homeInit() {
 
   var trending = await trendingPromise;
   initHero(trending);
-  loadTrendingRow(trending);
 }
 
 homeInit().catch(function(err) {

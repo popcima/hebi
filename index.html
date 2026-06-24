@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AniStream · Watch Free Anime Online · Stream Subbed & Dubbed in HD</title>
   <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌸</text></svg>" />
 </head>
 <body>
@@ -13,17 +17,17 @@
 <nav class="navbar">
   <a class="nav-logo" href="index.html">ANISTREAM<em>.</em></a>
   <div class="nav-search-wrap">
-    <span class="nav-s-icon">⌕</span>
+    <span class="nav-s-icon"><i class="fa-solid fa-magnifying-glass"></i></span>
     <input type="text" id="navSearch" placeholder="Search Anime" autocomplete="off" />
     <span class="nav-s-kbd">⌘</span>
-    <button class="nav-s-btn" id="navSearchBtn">↵</button>
+    <button class="nav-s-btn" id="navSearchBtn"><i class="fa-solid fa-arrow-right"></i></button>
   </div>
   <div class="nav-right">
     <div class="nav-links">
       <a href="index.html" class="active">Home</a>
       <a href="search.html">Browse</a>
     </div>
-    <a class="nav-icon-btn" href="search.html" title="Browse All">⊞</a>
+    <a class="nav-icon-btn" href="search.html" title="Browse All"><i class="fa-solid fa-border-all"></i></a>
   </div>
 </nav>
 
@@ -33,17 +37,17 @@
   <div class="hero" id="hero">
     <div id="heroSlides"></div>
     <div class="hero-counter" id="heroCounter" style="display:none">
-      <button class="hero-c-btn" id="heroPrev">‹</button>
+      <button class="hero-c-btn" id="heroPrev"><i class="fa-solid fa-chevron-left"></i></button>
       <span class="hero-c-text" id="heroCounterText">1 / 1</span>
-      <button class="hero-c-btn" id="heroNext">›</button>
+      <button class="hero-c-btn" id="heroNext"><i class="fa-solid fa-chevron-right"></i></button>
     </div>
   </div>
 
   <!-- GENRE TABS -->
   <div class="genre-row-wrap">
-    <button class="genre-row-scroll l" id="genreL">‹</button>
+    <button class="genre-row-scroll l" id="genreL"><i class="fa-solid fa-chevron-left"></i></button>
     <div class="genre-row" id="genreRow"></div>
-    <button class="genre-row-scroll r" id="genreR">›</button>
+    <button class="genre-row-scroll r" id="genreR"><i class="fa-solid fa-chevron-right"></i></button>
   </div>
 
   <!-- MAIN CONTENT LAYOUT -->
@@ -60,9 +64,9 @@
           <button class="tab-pill" data-tab="toprated">TOP RATED</button>
         </div>
         <div class="pager">
-          <button class="pager-btn" id="pagePrev" disabled>‹</button>
+          <button class="pager-btn" id="pagePrev" disabled><i class="fa-solid fa-chevron-left"></i></button>
           <span class="pager-num" id="pageNum">1</span>
-          <button class="pager-btn" id="pageNext">›</button>
+          <button class="pager-btn" id="pageNext"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
       </div>
 
@@ -75,13 +79,13 @@
       <div class="bottom-row" id="bottomRow">
         <div class="b-section">
           <div class="s-header">
-            <span class="s-title">› JUST FINISHED</span>
+            <span class="s-title"><i class="fa-solid fa-circle-check"></i> JUST FINISHED</span>
           </div>
           <div id="finishedList"></div>
         </div>
         <div class="b-section">
           <div class="s-header">
-            <span class="s-title">› TOP MOVIES</span>
+            <span class="s-title"><i class="fa-solid fa-film"></i> TOP MOVIES</span>
           </div>
           <div id="moviesList"></div>
         </div>
@@ -94,8 +98,8 @@
 
       <div class="sb-section">
         <div class="s-header">
-          <span class="s-title">TOP AIRING</span>
-          <a class="s-more" href="search.html?status=RELEASING">›</a>
+          <span class="s-title"><i class="fa-solid fa-rss"></i> TOP AIRING</span>
+          <a class="s-more" href="search.html?status=RELEASING"><i class="fa-solid fa-chevron-right"></i></a>
         </div>
         <div id="topAiringList">
           <div class="loading-wrap"><div class="spinner"></div></div>
@@ -104,8 +108,8 @@
 
       <div class="sb-section">
         <div class="s-header">
-          <span class="s-title">UPCOMING</span>
-          <a class="s-more" href="search.html">›</a>
+          <span class="s-title"><i class="fa-solid fa-calendar-days"></i> UPCOMING</span>
+          <a class="s-more" href="search.html"><i class="fa-solid fa-chevron-right"></i></a>
         </div>
         <div id="upcomingList">
           <div class="loading-wrap"><div class="spinner"></div></div>
@@ -114,7 +118,7 @@
 
       <div class="sb-section">
         <div class="s-header">
-          <span class="s-title">Airing Schedule</span>
+          <span class="s-title"><i class="fa-solid fa-clock"></i> Airing Schedule</span>
         </div>
         <div class="sched-days" id="schedDays"></div>
         <div id="schedList">
