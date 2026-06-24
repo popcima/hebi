@@ -23,7 +23,8 @@ function fmtDate(d) {
 }
 
 /* ── Episode list helpers ── */
-var epDates = {}; // episode → formatted date string
+var epDates  = {}; // episode → date string
+var epImages = {}; // episode → { thumb, title }
 
 function tsToShort(ts) {
   if (!ts) return '';
@@ -35,21 +36,49 @@ function tsToShort(ts) {
 function buildEpDatesMap(airingSchedule) {
   epDates = {};
   if (!airingSchedule || !airingSchedule.nodes) return;
-  airingSchedule.nodes.forEach(function(n) {
-    epDates[n.episode] = tsToShort(n.airingAt);
+  airingSchedule.nodes.forEach(function(n) { epDates[n.episode] = tsToShort(n.airingAt); });
+}
+
+/* Parse "Episode 3 - A New World" → { num:3, title:"A New World" }
+   Handles: "Episode N", "Ep. N", "N - Title", "N: Title" patterns */
+function parseStreamEp(str) {
+  var s = (str || '').trim();
+  var m = s.match(/(?:episode|ep\.?)\s*(\d+)[\s:·\-–—]+(.+)/i);
+  if (m) return { num: parseInt(m[1]), title: m[2].trim() };
+  var m2 = s.match(/(?:episode|ep\.?)\s*(\d+)/i);
+  if (m2) return { num: parseInt(m2[1]), title: '' };
+  var m3 = s.match(/^(\d+)[\s:·\-–—]+(.+)/);
+  if (m3) return { num: parseInt(m3[1]), title: m3[2].trim() };
+  return null;
+}
+
+function buildEpImagesMap(streamingEps) {
+  epImages = {};
+  if (!streamingEps || !streamingEps.length) return;
+  streamingEps.forEach(function(ep) {
+    if (!ep.thumbnail) return;
+    var parsed = parseStreamEp(ep.title);
+    if (parsed && parsed.num && !epImages[parsed.num]) {
+      epImages[parsed.num] = { thumb: ep.thumbnail, title: parsed.title };
+    }
   });
 }
 
 function buildEpCard(n, total, active, poster) {
-  var date = epDates[n] || '';
+  var date    = epDates[n] || '';
+  var epData  = epImages[n] || {};
+  var thumb   = epData.thumb || poster;
+  var hasReal = !!epData.thumb;
+  var epTitle = epData.title ? 'Ep '+n+': '+escH(epData.title) : 'Episode '+n;
+
   return (
     '<div class="wep-card'+(active?' active':'')+'" id="sep-'+n+'" data-ep="'+n+'">' +
-      '<div class="wep-thumb">' +
-        '<img src="'+escH(poster)+'" alt="Ep '+n+'" loading="lazy"/>' +
+      '<div class="wep-thumb'+(hasReal?' has-real':'')+'">' +
+        '<img src="'+escH(thumb)+'" alt="Ep '+n+'" loading="lazy"/>' +
         '<span class="wep-badge">EP '+n+'</span>' +
       '</div>' +
       '<div class="wep-body">' +
-        '<div class="wep-title">Episode '+n+'</div>' +
+        '<div class="wep-title">'+epTitle+'</div>' +
         '<div class="wep-meta">' +
           (date ? '<i class="fa-solid fa-calendar-days"></i> '+date : '<i class="fa-solid fa-film"></i> '+n+(total?' / '+total:'')) +
         '</div>' +
@@ -121,6 +150,7 @@ function renderWatch(media) {
   document.title = 'Ep '+watchEp+' — '+title+' — AniStream';
 
   buildEpDatesMap(media.airingSchedule);
+  buildEpImagesMap(media.streamingEpisodes);
 
   var poster  = media.coverImage.extraLarge || media.coverImage.large;
   var total   = media.episodes || (media.nextAiringEpisode ? media.nextAiringEpisode.episode-1 : null);

@@ -786,6 +786,8 @@ input,textarea{font:inherit}
   position:relative;background:var(--bg3);
 }
 .wep-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+/* fallback (cover image) looks better slightly dimmed */
+.wep-thumb:not(.has-real) img{filter:brightness(.7)}
 .wep-card:hover .wep-thumb img{transform:scale(1.04)}
 .wep-badge{
   position:absolute;bottom:5px;left:5px;

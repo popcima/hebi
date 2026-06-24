@@ -174,6 +174,7 @@ async function getAnimeById(id) {
         airingSchedule(notYetAired: false) {
           nodes { episode airingAt }
         }
+        streamingEpisodes { title thumbnail site url }
         externalLinks { site url type }
         characters(sort: ROLE, perPage: 8) {
           nodes { name { full } image { medium } }
