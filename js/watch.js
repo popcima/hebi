@@ -232,9 +232,9 @@ function renderWatch(media) {
       '<div class="wp-acts" id="wpActs">'+
         (watchEp>1?'<button class="wp-act-nav" id="prevEpBtn"><i class="fa-solid fa-backward-step"></i></button>':'')+
         (total===null||watchEp<total?'<button class="wp-act-nav" id="nextEpBtn"><i class="fa-solid fa-forward-step"></i></button>':'')+
-        '<button class="wp-act"><i class="fa-solid fa-flag"></i> Report</button>'+
-        '<button class="wp-act"><i class="fa-solid fa-download"></i> Download</button>'+
-        '<button class="wp-act"><i class="fa-solid fa-share-nodes"></i> Share</button>'+
+        '<button class="wp-act"><i class="fa-solid fa-flag"></i><span class="act-lbl"> Report</span></button>'+
+        '<button class="wp-act"><i class="fa-solid fa-download"></i><span class="act-lbl"> Download</span></button>'+
+        '<button class="wp-act"><i class="fa-solid fa-share-nodes"></i><span class="act-lbl"> Share</span></button>'+
       '</div>'+
     '</div>'+
 
