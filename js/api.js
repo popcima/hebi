@@ -8,13 +8,20 @@ const ANILIST_URL = 'https://graphql.anilist.co';
 const MEGAPLAY_URL = 'https://megaplay.buzz/stream/ani';
 
 const _CACHE_TTL = 5 * 60 * 1000; // 5 minutes
-const _reqTimes = [];
 
 function _cacheKey(query, variables) {
   const raw = JSON.stringify({ q: query.replace(/\s+/g, ' ').trim(), v: variables || {} });
   let h = 5381;
-  for (let i = 0; i < raw.length; i++) h = Math.imul(h * 33 ^ raw.charCodeAt(i), 1);
+  for (let i = 0; i < raw.length; i++) h = Math.imul(33, h) ^ raw.charCodeAt(i);
   return 'al:' + (h >>> 0).toString(36);
+}
+
+function _getReqTimes() {
+  try { return JSON.parse(sessionStorage.getItem('al:_rq') || '[]'); } catch (e) { return []; }
+}
+
+function _setReqTimes(times) {
+  try { sessionStorage.setItem('al:_rq', JSON.stringify(times)); } catch (e) {}
 }
 
 /* ---------- core fetch ---------- */
@@ -31,14 +38,14 @@ async function anilistFetch(query, variables) {
     }
   } catch (e) {}
 
-  // rate limit: stay under 85 req / 60s
-  const cutoff = Date.now() - 60000;
-  while (_reqTimes.length && _reqTimes[0] < cutoff) _reqTimes.shift();
-  if (_reqTimes.length >= 85) {
-    await new Promise(function (r) { setTimeout(r, 60000 - (Date.now() - _reqTimes[0]) + 200); });
-    _reqTimes.shift();
+  // rate limit: stay under 85 req / 60s, persisted across page navigations
+  let times = _getReqTimes().filter(function (t) { return Date.now() - t < 60000; });
+  if (times.length >= 85) {
+    await new Promise(function (r) { setTimeout(r, 60000 - (Date.now() - times[0]) + 200); });
+    times = times.filter(function (t) { return Date.now() - t < 60000; });
   }
-  _reqTimes.push(Date.now());
+  times.push(Date.now());
+  _setReqTimes(times);
 
   const res = await fetch(ANILIST_URL, {
     method: 'POST',
@@ -48,6 +55,13 @@ async function anilistFetch(query, variables) {
     },
     body: JSON.stringify({ query: query, variables: variables || {} }),
   });
+
+  // retry after 60s on rate limit
+  if (res.status === 429) {
+    await new Promise(function (r) { setTimeout(r, 61000); });
+    return anilistFetch(query, variables);
+  }
+
   if (!res.ok) throw new Error('AniList HTTP ' + res.status);
   const json = await res.json();
   if (json.errors && json.errors.length) throw new Error(json.errors[0].message);
