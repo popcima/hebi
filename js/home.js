@@ -14,16 +14,13 @@ function dotCls(status) {
 /* ─── HERO ─────────────────────────────────────────── */
 function buildHeroSlide(media, idx) {
   var title  = getTitle(media);
-  var bg     = media.coverImage.extraLarge || media.coverImage.large || media.bannerImage;
+  var bg     = media.bannerImage || media.coverImage.extraLarge || media.coverImage.large;
   var score  = formatScore(media.averageScore);
+  var ep     = media.episodes || (media.nextAiringEpisode ? (media.nextAiringEpisode.episode - 1) + '+' : '');
+  var studio = media.studios && media.studios.nodes[0] ? media.studios.nodes[0].name : '';
   var genres = (media.genres || []).slice(0, 3);
-  var year   = media.seasonYear || '';
-
-  var metaParts = [];
-  if (score !== 'N/A') metaParts.push('<i class="fa-solid fa-star hstar"></i><strong>' + score + '</strong>');
-  if (year) metaParts.push('<span>' + year + '</span>');
-  genres.forEach(function(g) { metaParts.push('<span>' + escH(g) + '</span>'); });
-  var metaHtml = metaParts.join('<span class="hmdot">·</span>');
+  var desc   = (media.description || '').replace(/<[^>]*>/g, '').slice(0, 200);
+  var format = (media.format || 'TV').replace(/_/g, ' ');
 
   var div = document.createElement('div');
   div.className = 'hero-slide' + (idx === 0 ? ' active' : '');
@@ -31,11 +28,21 @@ function buildHeroSlide(media, idx) {
     '<img src="' + escH(bg) + '" alt="' + escH(title) + '" loading="' + (idx === 0 ? 'eager' : 'lazy') + '" />' +
     '<div class="hero-overlay"></div>' +
     '<div class="hero-content">' +
+      '<div class="hero-info-row">' +
+        '<span>' + format + '</span>' +
+        (ep ? '<span><i class="fa-solid fa-tv"></i> ' + ep + ' eps</span>' : '') +
+        (score !== 'N/A' ? '<span><i class="fa-solid fa-star"></i> ' + score + '</span>' : '') +
+        (media.duration ? '<span><i class="fa-regular fa-clock"></i> ' + media.duration + 'm</span>' : '') +
+      '</div>' +
       '<div class="hero-title">' + escH(title) + '</div>' +
-      '<div class="hero-meta">' + metaHtml + '</div>' +
+      '<div class="hero-tags">' +
+        genres.map(function(g) { return '<span>' + escH(g) + '</span>'; }).join('') +
+        (studio ? '<span>' + escH(studio) + '</span>' : '') +
+      '</div>' +
+      (desc ? '<p class="hero-desc">' + escH(desc) + (desc.length >= 200 ? '…' : '') + '</p>' : '') +
       '<div class="hero-btns">' +
-        '<a class="hero-btn hero-btn-watch" href="watch.html?id=' + media.id + '&ep=1&lang=sub"><i class="fa-solid fa-play"></i> Play</a>' +
-        '<a class="hero-btn hero-btn-more" href="anime.html?id=' + media.id + '"><i class="fa-solid fa-circle-info"></i> See More</a>' +
+        '<a class="hero-btn hero-btn-watch" href="watch.html?id=' + media.id + '&ep=1&lang=sub"><i class="fa-solid fa-play"></i> Watch Now</a>' +
+        '<a class="hero-btn" href="anime.html?id=' + media.id + '"><i class="fa-solid fa-circle-info"></i> Details</a>' +
       '</div>' +
     '</div>';
   return div;
