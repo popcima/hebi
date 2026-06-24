@@ -1,16 +1,4 @@
 /* Home page logic — no ES modules */
-var GRADIENTS = [
-  'linear-gradient(45deg,#e4c928,white)',
-  'linear-gradient(45deg,#B5A8FF,white)',
-  'linear-gradient(45deg,#d4cafe,white)',
-  'linear-gradient(45deg,#e4c928,#B5A8FF)',
-  'linear-gradient(45deg,#f0e8ff,white)',
-  'linear-gradient(45deg,#e4d6ae,white)',
-  'linear-gradient(45deg,#c9bfff,white)',
-  'linear-gradient(45deg,#ffd97d,white)',
-  'linear-gradient(45deg,#e4c928,#c9bfff)',
-];
-
 var heroItems = [], heroIdx = 0, heroTimer = null;
 
 function escH(str) {
@@ -26,7 +14,6 @@ function dotCls(status) {
 /* ─── HERO ─────────────────────────────────────────── */
 function buildHeroSlide(media, idx) {
   var title = getTitle(media);
-  var grad = GRADIENTS[idx % GRADIENTS.length];
   var bg = media.bannerImage || media.coverImage.extraLarge || media.coverImage.large;
   var score = formatScore(media.averageScore);
   var ep = media.episodes || (media.nextAiringEpisode ? (media.nextAiringEpisode.episode - 1) + '+' : '');
@@ -43,19 +30,19 @@ function buildHeroSlide(media, idx) {
     '<div class="hero-content">' +
       '<div class="hero-info-row">' +
         '<span>' + format + '</span>' +
-        (ep ? '<span><i class="fa-solid fa-tv"></i> ' + ep + '</span>' : '') +
+        (ep ? '<span><i class="fa-solid fa-tv"></i> ' + ep + ' eps</span>' : '') +
         (score !== 'N/A' ? '<span><i class="fa-solid fa-star"></i> ' + score + '</span>' : '') +
-        (media.duration ? '<span><i class="fa-solid fa-clock"></i> ' + media.duration + 'm</span>' : '') +
+        (media.duration ? '<span><i class="fa-regular fa-clock"></i> ' + media.duration + 'm</span>' : '') +
       '</div>' +
-      '<div class="hero-title" style="background:' + grad + ';-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">' + escH(title) + '</div>' +
+      '<div class="hero-title">' + escH(title) + '</div>' +
       '<div class="hero-tags">' +
         genres.map(function(g) { return '<span>' + escH(g) + '</span>'; }).join('') +
         (studio ? '<span>' + escH(studio) + '</span>' : '') +
       '</div>' +
       (desc ? '<p class="hero-desc">' + escH(desc) + (desc.length >= 200 ? '…' : '') + '</p>' : '') +
       '<div class="hero-btns">' +
-        '<a class="hero-btn hero-btn-watch" href="watch.html?id=' + media.id + '&ep=1&lang=sub"><i class="fa-solid fa-play"></i> WATCH NOW</a>' +
-        '<a class="hero-btn" href="anime.html?id=' + media.id + '"><i class="fa-solid fa-circle-info"></i> DETAILS</a>' +
+        '<a class="hero-btn hero-btn-watch" href="watch.html?id=' + media.id + '&ep=1&lang=sub"><i class="fa-solid fa-play"></i> Watch Now</a>' +
+        '<a class="hero-btn" href="anime.html?id=' + media.id + '"><i class="fa-solid fa-circle-info"></i> Details</a>' +
       '</div>' +
     '</div>';
   return div;
